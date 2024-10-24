@@ -1,4 +1,4 @@
-# HomeoCare - AI
+# Homuse Care - AI (by Kartik A. Naphade)
 
 ![HomeoCare Logo](./public/screenshot.png)
 
