@@ -4,7 +4,9 @@
 
 ## Description
 
-HomeoCare is an application designed to provide holistic health solutions using OpenAI through homeopathic principles. It aims to assist users in finding personalized homeopathic remedies based on their symptoms and health history.
+HomeoCare is an application designed to provide holistic health solutions using homeopathic principles. It aims to assist users in finding personalized homeopathic remedies based on their symptoms and health history.
+
+**Free to Use**: This application includes a built-in free homeopathic suggestion system that works without any API keys or costs. You can also optionally use OpenAI API for more advanced AI-powered suggestions (requires API key).
 
 ## Key Features
 
@@ -17,9 +19,20 @@ HomeoCare is an application designed to provide holistic health solutions using 
 
 To install HomeoCare, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/chiragbadhe/Homeocare`
+1. Clone the repository: `git clone https://github.com/KartikNaphade2004/Homeocare`
 2. Install dependencies: `npm install`
-3. Start the application: `npm start`
+3. Start the application: `npm run dev` (for development) or `npm start` (for production)
+
+### Free Usage (No API Key Required)
+
+The application works **completely free** out of the box using a built-in rule-based homeopathic suggestion system. No API keys or configuration needed!
+
+### Optional: OpenAI Integration
+
+For enhanced AI-powered suggestions, you can optionally add your OpenAI API key:
+1. Create a `.env.local` file in the root directory
+2. Add: `OPENAI_API_KEY=your_api_key_here`
+3. For Vercel deployment, add the environment variable in your project settings
 
 ## Usage
 
@@ -30,6 +43,7 @@ To install HomeoCare, follow these steps:
 
 - Frontend: React.js, Next.js
 - Backend: Node.js, Express.js
+- AI: Built-in rule-based system (free) + Optional OpenAI API integration
 
 ## Contributing
 
