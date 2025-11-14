@@ -1,4 +1,3 @@
-import { Message } from './../../../node_modules/openai/resources/beta/threads/messages.d';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { OpenAI } from 'openai';
 
@@ -15,7 +14,23 @@ export default async function handler(
   res: NextApiResponse<ResponseData>
 ) {
   if (req.method === 'POST') {
+    // Check if API key is configured
+    if (!process.env.OPENAI_API_KEY) {
+      console.error('OPENAI_API_KEY is not configured');
+      return res.status(500).json({ 
+        error: 'API key is not configured. Please set OPENAI_API_KEY environment variable.' 
+      });
+    }
+
     const { answers } = req.body;
+    
+    // Validate input
+    if (!answers || Object.keys(answers).length === 0) {
+      return res.status(400).json({ 
+        error: 'No answers provided. Please fill out the form.' 
+      });
+    }
+
     const formattedAnswers = Object.values(answers).join('\n');
 
     try {
@@ -36,8 +51,10 @@ export default async function handler(
 
       const suggestion = response.choices[0].message?.content?.trim() || 'No suggestion available.';
       res.status(200).json({ suggestion });
-    } catch (error) {
-        res.status(500).json({ error: (error as Error).message });
+    } catch (error: any) {
+      console.error('OpenAI API error:', error);
+      const errorMessage = error?.message || 'An error occurred while processing your request.';
+      res.status(500).json({ error: errorMessage });
     }
   } else {
     res.status(405).json({ message: 'Method not allowed' });
