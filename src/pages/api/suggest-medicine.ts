@@ -53,8 +53,33 @@ export default async function handler(
       res.status(200).json({ suggestion });
     } catch (error: any) {
       console.error('OpenAI API error:', error);
-      const errorMessage = error?.message || 'An error occurred while processing your request.';
-      res.status(500).json({ error: errorMessage });
+      
+      // Handle specific OpenAI API errors
+      const errorMessage = error?.message || '';
+      const statusCode = error?.status || error?.response?.status || error?.statusCode;
+      
+      // Check for quota exceeded errors (429)
+      if (statusCode === 429 || 
+          errorMessage.toLowerCase().includes('quota') || 
+          errorMessage.toLowerCase().includes('exceeded') ||
+          errorMessage.includes('429')) {
+        return res.status(429).json({ 
+          error: 'API quota exceeded. Please check your OpenAI account billing and usage limits. Visit https://platform.openai.com/account/billing to add credits or upgrade your plan.' 
+        });
+      }
+      
+      // Check for authentication errors (401)
+      if (statusCode === 401 || 
+          errorMessage.toLowerCase().includes('invalid api key') ||
+          errorMessage.toLowerCase().includes('authentication')) {
+        return res.status(401).json({ 
+          error: 'Invalid API key. Please check your OPENAI_API_KEY environment variable in Vercel settings.' 
+        });
+      }
+      
+      // Generic error handling
+      const finalErrorMessage = errorMessage || 'An error occurred while processing your request.';
+      res.status(500).json({ error: finalErrorMessage });
     }
   } else {
     res.status(405).json({ message: 'Method not allowed' });

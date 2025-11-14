@@ -57,7 +57,28 @@ const Home: React.FC = () => {
         <div className="max-w-2xl mx-auto p-4 mt-8">
           <div className="bg-red-50 border border-red-200 rounded-md p-4">
             <h3 className="text-red-800 font-semibold mb-2">Error</h3>
-            <p className="text-red-700">{error}</p>
+            <p className="text-red-700 mb-3">{error}</p>
+            {error.includes('quota') || error.includes('billing') ? (
+              <div className="mt-3 pt-3 border-t border-red-200">
+                <p className="text-sm text-red-600 mb-2 font-medium">How to fix this:</p>
+                <ol className="list-decimal list-inside text-sm text-red-700 space-y-1">
+                  <li>Visit <a href="https://platform.openai.com/account/billing" target="_blank" rel="noopener noreferrer" className="underline font-medium">OpenAI Billing</a></li>
+                  <li>Add a payment method or add credits to your account</li>
+                  <li>Check your usage limits and remaining quota</li>
+                  <li>Wait a few minutes if you've hit rate limits</li>
+                </ol>
+              </div>
+            ) : error.includes('API key') || error.includes('Invalid') ? (
+              <div className="mt-3 pt-3 border-t border-red-200">
+                <p className="text-sm text-red-600 mb-2 font-medium">How to fix this:</p>
+                <ol className="list-decimal list-inside text-sm text-red-700 space-y-1">
+                  <li>Go to your Vercel project settings</li>
+                  <li>Navigate to Settings → Environment Variables</li>
+                  <li>Add or update <code className="bg-red-100 px-1 rounded">OPENAI_API_KEY</code></li>
+                  <li>Redeploy your application</li>
+                </ol>
+              </div>
+            ) : null}
           </div>
         </div>
       )}
